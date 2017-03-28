@@ -42,6 +42,24 @@ func TestStringStore(t *testing.T) {
 	}
 }
 
+func TestStringSwap(t *testing.T) {
+	if err := quick.Check(func(old, new string) bool {
+		s := NewString(old)
+		return s.Swap(new) == old && s.Load() == new
+	}, nil); err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestStringReset(t *testing.T) {
+	if err := quick.Check(func(v string) bool {
+		s := NewString(v)
+		return s.Reset() == v && s.Load() == ""
+	}, nil); err != nil {
+		t.Fatal(err)
+	}
+}
+
 func BenchmarkNewString(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		NewString("")
@@ -69,5 +87,21 @@ func BenchmarkStringStore(b *testing.B) {
 
 	for n := 0; n < b.N; n++ {
 		s.Store("x")
+	}
+}
+
+func BenchmarkStringSwap(b *testing.B) {
+	var s String
+
+	for n := 0; n < b.N; n++ {
+		s.Swap("x")
+	}
+}
+
+func BenchmarkStringReset(b *testing.B) {
+	var s String
+
+	for n := 0; n < b.N; n++ {
+		s.Reset()
 	}
 }
