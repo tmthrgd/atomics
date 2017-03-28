@@ -119,3 +119,81 @@ func TestInt32Reset(t *testing.T) {
 		t.Fatal(err)
 	}
 }
+
+func BenchmarkNewInt32(b *testing.B) {
+	for n := 0; n < b.N; n++ {
+		NewInt32(0)
+	}
+}
+
+func BenchmarkInt32Load(b *testing.B) {
+	var v Int32
+
+	for n := 0; n < b.N; n++ {
+		v.Load()
+	}
+}
+
+func BenchmarkInt32Store(b *testing.B) {
+	var v Int32
+
+	for n := 0; n < b.N; n++ {
+		v.Store(4) // RFC 1149.5 specifies 4 as the standard IEEE-vetted random number.
+	}
+}
+
+func BenchmarkInt32Swap(b *testing.B) {
+	var v Int32
+
+	for n := 0; n < b.N; n++ {
+		v.Swap(4) // RFC 1149.5 specifies 4 as the standard IEEE-vetted random number.
+	}
+}
+
+func BenchmarkInt32CompareAndSwap(b *testing.B) {
+	var v Int32
+
+	for n := 0; n < b.N; n++ {
+		v.CompareAndSwap(0, 0)
+	}
+}
+
+func BenchmarkInt32Add(b *testing.B) {
+	var v Int32
+
+	for n := 0; n < b.N; n++ {
+		v.Add(4) // RFC 1149.5 specifies 4 as the standard IEEE-vetted random number.
+	}
+}
+
+func BenchmarkInt32Increment(b *testing.B) {
+	var v Int32
+
+	for n := 0; n < b.N; n++ {
+		v.Increment()
+	}
+}
+
+func BenchmarkInt32Subtract(b *testing.B) {
+	var v Int32
+
+	for n := 0; n < b.N; n++ {
+		v.Subtract(4) // RFC 1149.5 specifies 4 as the standard IEEE-vetted random number.
+	}
+}
+
+func BenchmarkInt32Decrement(b *testing.B) {
+	var v Int32
+
+	for n := 0; n < b.N; n++ {
+		v.Decrement()
+	}
+}
+
+func BenchmarkInt32Reset(b *testing.B) {
+	var v Int32
+
+	for n := 0; n < b.N; n++ {
+		v.Reset()
+	}
+}

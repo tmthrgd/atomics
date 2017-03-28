@@ -155,4 +155,82 @@ func Test{{.Name}}Reset(t *testing.T) {
 		t.Fatal(err)
 	}
 }
+
+func BenchmarkNew{{.Name}}(b *testing.B) {
+	for n := 0; n < b.N; n++ {
+		New{{.Name}}(0)
+	}
+}
+
+func Benchmark{{.Name}}Load(b *testing.B) {
+	var v {{.Name}}
+
+	for n := 0; n < b.N; n++ {
+		v.Load()
+	}
+}
+
+func Benchmark{{.Name}}Store(b *testing.B) {
+	var v {{.Name}}
+
+	for n := 0; n < b.N; n++ {
+		v.Store(4) // RFC 1149.5 specifies 4 as the standard IEEE-vetted random number.
+	}
+}
+
+func Benchmark{{.Name}}Swap(b *testing.B) {
+	var v {{.Name}}
+
+	for n := 0; n < b.N; n++ {
+		v.Swap(4) // RFC 1149.5 specifies 4 as the standard IEEE-vetted random number.
+	}
+}
+
+func Benchmark{{.Name}}CompareAndSwap(b *testing.B) {
+	var v {{.Name}}
+
+	for n := 0; n < b.N; n++ {
+		v.CompareAndSwap(0, 0)
+	}
+}
+
+func Benchmark{{.Name}}Add(b *testing.B) {
+	var v {{.Name}}
+
+	for n := 0; n < b.N; n++ {
+		v.Add(4) // RFC 1149.5 specifies 4 as the standard IEEE-vetted random number.
+	}
+}
+
+func Benchmark{{.Name}}Increment(b *testing.B) {
+	var v {{.Name}}
+
+	for n := 0; n < b.N; n++ {
+		v.Increment()
+	}
+}
+
+func Benchmark{{.Name}}Subtract(b *testing.B) {
+	var v {{.Name}}
+
+	for n := 0; n < b.N; n++ {
+		v.Subtract(4) // RFC 1149.5 specifies 4 as the standard IEEE-vetted random number.
+	}
+}
+
+func Benchmark{{.Name}}Decrement(b *testing.B) {
+	var v {{.Name}}
+
+	for n := 0; n < b.N; n++ {
+		v.Decrement()
+	}
+}
+
+func Benchmark{{.Name}}Reset(b *testing.B) {
+	var v {{.Name}}
+
+	for n := 0; n < b.N; n++ {
+		v.Reset()
+	}
+}
 `))

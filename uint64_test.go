@@ -119,3 +119,81 @@ func TestUint64Reset(t *testing.T) {
 		t.Fatal(err)
 	}
 }
+
+func BenchmarkNewUint64(b *testing.B) {
+	for n := 0; n < b.N; n++ {
+		NewUint64(0)
+	}
+}
+
+func BenchmarkUint64Load(b *testing.B) {
+	var v Uint64
+
+	for n := 0; n < b.N; n++ {
+		v.Load()
+	}
+}
+
+func BenchmarkUint64Store(b *testing.B) {
+	var v Uint64
+
+	for n := 0; n < b.N; n++ {
+		v.Store(4) // RFC 1149.5 specifies 4 as the standard IEEE-vetted random number.
+	}
+}
+
+func BenchmarkUint64Swap(b *testing.B) {
+	var v Uint64
+
+	for n := 0; n < b.N; n++ {
+		v.Swap(4) // RFC 1149.5 specifies 4 as the standard IEEE-vetted random number.
+	}
+}
+
+func BenchmarkUint64CompareAndSwap(b *testing.B) {
+	var v Uint64
+
+	for n := 0; n < b.N; n++ {
+		v.CompareAndSwap(0, 0)
+	}
+}
+
+func BenchmarkUint64Add(b *testing.B) {
+	var v Uint64
+
+	for n := 0; n < b.N; n++ {
+		v.Add(4) // RFC 1149.5 specifies 4 as the standard IEEE-vetted random number.
+	}
+}
+
+func BenchmarkUint64Increment(b *testing.B) {
+	var v Uint64
+
+	for n := 0; n < b.N; n++ {
+		v.Increment()
+	}
+}
+
+func BenchmarkUint64Subtract(b *testing.B) {
+	var v Uint64
+
+	for n := 0; n < b.N; n++ {
+		v.Subtract(4) // RFC 1149.5 specifies 4 as the standard IEEE-vetted random number.
+	}
+}
+
+func BenchmarkUint64Decrement(b *testing.B) {
+	var v Uint64
+
+	for n := 0; n < b.N; n++ {
+		v.Decrement()
+	}
+}
+
+func BenchmarkUint64Reset(b *testing.B) {
+	var v Uint64
+
+	for n := 0; n < b.N; n++ {
+		v.Reset()
+	}
+}
