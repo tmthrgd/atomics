@@ -12,30 +12,30 @@ import (
 	"testing/quick"
 )
 
-func TestNewInt64(t *testing.T) {
-	if NewInt64(0) == nil {
-		t.Fatal("NewInt64 returned nil")
+func TestNewFloat32(t *testing.T) {
+	if NewFloat32(0) == nil {
+		t.Fatal("NewFloat32 returned nil")
 	}
 }
 
-func TestInt64UnsafeRaw(t *testing.T) {
-	var c Int64
+func TestFloat32UnsafeRaw(t *testing.T) {
+	var c Float32
 	if c.UnsafeRaw() == nil {
 		t.Fatal("UnsafeRaw returned nil")
 	}
 }
 
-func TestInt64Load(t *testing.T) {
-	if err := quick.Check(func(v int64) bool {
-		return NewInt64(v).Load() == v
+func TestFloat32Load(t *testing.T) {
+	if err := quick.Check(func(v float32) bool {
+		return NewFloat32(v).Load() == v
 	}, nil); err != nil {
 		t.Fatal(err)
 	}
 }
 
-func TestInt64Store(t *testing.T) {
-	if err := quick.Check(func(v int64) bool {
-		var c Int64
+func TestFloat32Store(t *testing.T) {
+	if err := quick.Check(func(v float32) bool {
+		var c Float32
 		c.Store(v)
 		return c.Load() == v
 	}, nil); err != nil {
@@ -43,18 +43,18 @@ func TestInt64Store(t *testing.T) {
 	}
 }
 
-func TestInt64Swap(t *testing.T) {
-	if err := quick.Check(func(old, new int64) bool {
-		c := NewInt64(old)
+func TestFloat32Swap(t *testing.T) {
+	if err := quick.Check(func(old, new float32) bool {
+		c := NewFloat32(old)
 		return c.Swap(new) == old && c.Load() == new
 	}, nil); err != nil {
 		t.Fatal(err)
 	}
 }
 
-func TestInt64CompareAndSwap(t *testing.T) {
-	if err := quick.Check(func(old, new int64) bool {
-		c := NewInt64(old)
+func TestFloat32CompareAndSwap(t *testing.T) {
+	if err := quick.Check(func(old, new float32) bool {
+		c := NewFloat32(old)
 		return !c.CompareAndSwap(-old, new) &&
 			c.Load() == old &&
 			c.CompareAndSwap(old, new) &&
@@ -64,9 +64,9 @@ func TestInt64CompareAndSwap(t *testing.T) {
 	}
 }
 
-func TestInt64Add(t *testing.T) {
-	if err := quick.Check(func(v, delta int64) bool {
-		c := NewInt64(v)
+func TestFloat32Add(t *testing.T) {
+	if err := quick.Check(func(v, delta float32) bool {
+		c := NewFloat32(v)
 		v += delta
 		return c.Add(delta) == v && c.Load() == v
 	}, nil); err != nil {
@@ -74,9 +74,9 @@ func TestInt64Add(t *testing.T) {
 	}
 }
 
-func TestInt64Increment(t *testing.T) {
-	if err := quick.Check(func(v int64) bool {
-		c := NewInt64(v)
+func TestFloat32Increment(t *testing.T) {
+	if err := quick.Check(func(v float32) bool {
+		c := NewFloat32(v)
 		v++
 		return c.Increment() == v && c.Load() == v
 	}, nil); err != nil {
@@ -84,9 +84,9 @@ func TestInt64Increment(t *testing.T) {
 	}
 }
 
-func TestInt64Subtract(t *testing.T) {
-	if err := quick.Check(func(v, delta int64) bool {
-		c := NewInt64(v)
+func TestFloat32Subtract(t *testing.T) {
+	if err := quick.Check(func(v, delta float32) bool {
+		c := NewFloat32(v)
 		v -= delta
 		return c.Subtract(delta) == v && c.Load() == v
 	}, nil); err != nil {
@@ -94,9 +94,9 @@ func TestInt64Subtract(t *testing.T) {
 	}
 }
 
-func TestInt64Decrement(t *testing.T) {
-	if err := quick.Check(func(v int64) bool {
-		c := NewInt64(v)
+func TestFloat32Decrement(t *testing.T) {
+	if err := quick.Check(func(v float32) bool {
+		c := NewFloat32(v)
 		v--
 		return c.Decrement() == v && c.Load() == v
 	}, nil); err != nil {
@@ -104,9 +104,9 @@ func TestInt64Decrement(t *testing.T) {
 	}
 }
 
-func TestInt64Reset(t *testing.T) {
-	if err := quick.Check(func(v int64) bool {
-		c := NewInt64(v)
+func TestFloat32Reset(t *testing.T) {
+	if err := quick.Check(func(v float32) bool {
+		c := NewFloat32(v)
 		return c.Reset() == v && c.Load() == 0
 	}, nil); err != nil {
 		t.Fatal(err)
