@@ -7,7 +7,7 @@ package counters
 
 import "testing"
 
-func TestSignedDecrement(t *testing.T) {
+func TestInt64Decrement(t *testing.T) {
 	var c Int64
 	c.Store(0, 2)
 	c.Decrement(0)

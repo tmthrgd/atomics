@@ -7,16 +7,16 @@ package counters
 
 import "testing"
 
-func TestUint64UnsafeLoad(t *testing.T) {
-	var c Uint64
+func TestFloat64UnsafeLoad(t *testing.T) {
+	var c Float64
 
-	if c.UnsafeLoad(0) == nil {
+	if c.unsafeLoad(0) == nil {
 		t.Fatal("UnsafeLoad returned nil")
 	}
 }
 
-func TestUint64Load(t *testing.T) {
-	var c Uint64
+func TestFloat64Load(t *testing.T) {
+	var c Float64
 
 	if c.Load(0) != 0 {
 		t.Fatal("Load returned non-zero for new key")
@@ -29,8 +29,8 @@ func TestUint64Load(t *testing.T) {
 	}
 }
 
-func TestUint64Store(t *testing.T) {
-	var c Uint64
+func TestFloat64Store(t *testing.T) {
+	var c Float64
 	c.Store(0, 1)
 
 	if c.Load(0) != 1 {
@@ -38,8 +38,8 @@ func TestUint64Store(t *testing.T) {
 	}
 }
 
-func TestUint64Swap(t *testing.T) {
-	var c Uint64
+func TestFloat64Swap(t *testing.T) {
+	var c Float64
 	c.Store(0, 1)
 
 	if c.Swap(0, 2) != 1 {
@@ -51,8 +51,8 @@ func TestUint64Swap(t *testing.T) {
 	}
 }
 
-func TestUint64CompareAndSwap(t *testing.T) {
-	var c Uint64
+func TestFloat64CompareAndSwap(t *testing.T) {
+	var c Float64
 	c.Store(0, 1)
 
 	if c.CompareAndSwap(0, 0, 2) {
@@ -68,58 +68,8 @@ func TestUint64CompareAndSwap(t *testing.T) {
 	}
 }
 
-func TestUint64Add(t *testing.T) {
-	var c Uint64
-	c.Add(0, 2)
-
-	if c.Load(0) != 2 {
-		t.Fatal("Add failed")
-	}
-}
-
-func TestUint64Increment(t *testing.T) {
-	var c Uint64
-	c.Increment(0)
-
-	if c.Load(0) != 1 {
-		t.Fatal("Increment failed")
-	}
-}
-
-func TestUint64Subtract(t *testing.T) {
-	var c Uint64
-	c.Store(0, 2)
-	c.Subtract(0, 1)
-
-	if c.Load(0) != 1 {
-		t.Fatal("Subtract failed")
-	}
-
-	c.Subtract(0, 2)
-
-	if c.Load(0) != ^uint64(0) {
-		t.Fatal("Subtract failed")
-	}
-}
-
-func TestUint64Decrement(t *testing.T) {
-	var c Uint64
-	c.Store(0, 2)
-	c.Decrement(0)
-
-	if c.Reset(0) != 1 {
-		t.Fatal("Decrement failed")
-	}
-
-	c.Decrement(0)
-
-	if c.Load(0) != ^uint64(0) {
-		t.Fatal("Decrement failed")
-	}
-}
-
-func TestUint64Reset(t *testing.T) {
-	var c Uint64
+func TestFloat64Reset(t *testing.T) {
+	var c Float64
 	c.Store(0, 2)
 
 	if c.Reset(0) != 2 {
@@ -131,8 +81,8 @@ func TestUint64Reset(t *testing.T) {
 	}
 }
 
-func TestUint64Delete(t *testing.T) {
-	var c Uint64
+func TestFloat64Delete(t *testing.T) {
+	var c Float64
 	c.Store(0, 2)
 	c.Delete(0)
 
@@ -141,8 +91,8 @@ func TestUint64Delete(t *testing.T) {
 	}
 }
 
-func TestUint64Keys(t *testing.T) {
-	var c Uint64
+func TestFloat64Keys(t *testing.T) {
+	var c Float64
 	c.Store(0, 1)
 	c.Store(1, 2)
 
