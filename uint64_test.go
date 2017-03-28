@@ -13,8 +13,9 @@ import (
 )
 
 func TestUint64Default(t *testing.T) {
-	var c Uint64
-	if c.Load() != 0 {
+	var v Uint64
+
+	if v.Load() != 0 {
 		t.Fatal("invalid default value")
 	}
 }
@@ -26,8 +27,9 @@ func TestNewUint64(t *testing.T) {
 }
 
 func TestUint64UnsafeRaw(t *testing.T) {
-	var c Uint64
-	if c.UnsafeRaw() == nil {
+	var v Uint64
+
+	if v.UnsafeRaw() == nil {
 		t.Fatal("UnsafeRaw returned nil")
 	}
 }
@@ -42,9 +44,9 @@ func TestUint64Load(t *testing.T) {
 
 func TestUint64Store(t *testing.T) {
 	if err := quick.Check(func(v uint64) bool {
-		var c Uint64
-		c.Store(v)
-		return c.Load() == v
+		var a Uint64
+		a.Store(v)
+		return a.Load() == v
 	}, nil); err != nil {
 		t.Fatal(err)
 	}
@@ -52,8 +54,8 @@ func TestUint64Store(t *testing.T) {
 
 func TestUint64Swap(t *testing.T) {
 	if err := quick.Check(func(old, new uint64) bool {
-		c := NewUint64(old)
-		return c.Swap(new) == old && c.Load() == new
+		a := NewUint64(old)
+		return a.Swap(new) == old && a.Load() == new
 	}, nil); err != nil {
 		t.Fatal(err)
 	}
@@ -61,11 +63,11 @@ func TestUint64Swap(t *testing.T) {
 
 func TestUint64CompareAndSwap(t *testing.T) {
 	if err := quick.Check(func(old, new uint64) bool {
-		c := NewUint64(old)
-		return !c.CompareAndSwap(-old, new) &&
-			c.Load() == old &&
-			c.CompareAndSwap(old, new) &&
-			c.Load() == new
+		a := NewUint64(old)
+		return !a.CompareAndSwap(-old, new) &&
+			a.Load() == old &&
+			a.CompareAndSwap(old, new) &&
+			a.Load() == new
 	}, nil); err != nil {
 		t.Fatal(err)
 	}
@@ -73,9 +75,9 @@ func TestUint64CompareAndSwap(t *testing.T) {
 
 func TestUint64Add(t *testing.T) {
 	if err := quick.Check(func(v, delta uint64) bool {
-		c := NewUint64(v)
+		a := NewUint64(v)
 		v += delta
-		return c.Add(delta) == v && c.Load() == v
+		return a.Add(delta) == v && a.Load() == v
 	}, nil); err != nil {
 		t.Fatal(err)
 	}
@@ -83,9 +85,9 @@ func TestUint64Add(t *testing.T) {
 
 func TestUint64Increment(t *testing.T) {
 	if err := quick.Check(func(v uint64) bool {
-		c := NewUint64(v)
+		a := NewUint64(v)
 		v++
-		return c.Increment() == v && c.Load() == v
+		return a.Increment() == v && a.Load() == v
 	}, nil); err != nil {
 		t.Fatal(err)
 	}
@@ -93,9 +95,9 @@ func TestUint64Increment(t *testing.T) {
 
 func TestUint64Subtract(t *testing.T) {
 	if err := quick.Check(func(v, delta uint64) bool {
-		c := NewUint64(v)
+		a := NewUint64(v)
 		v -= delta
-		return c.Subtract(delta) == v && c.Load() == v
+		return a.Subtract(delta) == v && a.Load() == v
 	}, nil); err != nil {
 		t.Fatal(err)
 	}
@@ -103,9 +105,9 @@ func TestUint64Subtract(t *testing.T) {
 
 func TestUint64Decrement(t *testing.T) {
 	if err := quick.Check(func(v uint64) bool {
-		c := NewUint64(v)
+		a := NewUint64(v)
 		v--
-		return c.Decrement() == v && c.Load() == v
+		return a.Decrement() == v && a.Load() == v
 	}, nil); err != nil {
 		t.Fatal(err)
 	}
@@ -113,8 +115,8 @@ func TestUint64Decrement(t *testing.T) {
 
 func TestUint64Reset(t *testing.T) {
 	if err := quick.Check(func(v uint64) bool {
-		c := NewUint64(v)
-		return c.Reset() == v && c.Load() == 0
+		a := NewUint64(v)
+		return a.Reset() == v && a.Load() == 0
 	}, nil); err != nil {
 		t.Fatal(err)
 	}

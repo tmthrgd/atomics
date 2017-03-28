@@ -49,8 +49,9 @@ import (
 )
 
 func Test{{.Name}}Default(t *testing.T) {
-	var c {{.Name}}
-	if c.Load() != 0 {
+	var v {{.Name}}
+
+	if v.Load() != 0 {
 		t.Fatal("invalid default value")
 	}
 }
@@ -62,8 +63,9 @@ func TestNew{{.Name}}(t *testing.T) {
 }
 
 func Test{{.Name}}UnsafeRaw(t *testing.T) {
-	var c {{.Name}}
-	if c.UnsafeRaw() == nil {
+	var v {{.Name}}
+
+	if v.UnsafeRaw() == nil {
 		t.Fatal("UnsafeRaw returned nil")
 	}
 }
@@ -78,9 +80,9 @@ func Test{{.Name}}Load(t *testing.T) {
 
 func Test{{.Name}}Store(t *testing.T) {
 	if err := quick.Check(func(v {{.Type}}) bool {
-		var c {{.Name}}
-		c.Store(v)
-		return c.Load() == v
+		var a {{.Name}}
+		a.Store(v)
+		return a.Load() == v
 	}, nil); err != nil {
 		t.Fatal(err)
 	}
@@ -88,8 +90,8 @@ func Test{{.Name}}Store(t *testing.T) {
 
 func Test{{.Name}}Swap(t *testing.T) {
 	if err := quick.Check(func(old, new {{.Type}}) bool {
-		c := New{{.Name}}(old)
-		return c.Swap(new) == old && c.Load() == new
+		a := New{{.Name}}(old)
+		return a.Swap(new) == old && a.Load() == new
 	}, nil); err != nil {
 		t.Fatal(err)
 	}
@@ -97,11 +99,11 @@ func Test{{.Name}}Swap(t *testing.T) {
 
 func Test{{.Name}}CompareAndSwap(t *testing.T) {
 	if err := quick.Check(func(old, new {{.Type}}) bool {
-		c := New{{.Name}}(old)
-		return !c.CompareAndSwap(-old, new) &&
-			c.Load() == old &&
-			c.CompareAndSwap(old, new) &&
-			c.Load() == new
+		a := New{{.Name}}(old)
+		return !a.CompareAndSwap(-old, new) &&
+			a.Load() == old &&
+			a.CompareAndSwap(old, new) &&
+			a.Load() == new
 	}, nil); err != nil {
 		t.Fatal(err)
 	}
@@ -109,9 +111,9 @@ func Test{{.Name}}CompareAndSwap(t *testing.T) {
 
 func Test{{.Name}}Add(t *testing.T) {
 	if err := quick.Check(func(v, delta {{.Type}}) bool {
-		c := New{{.Name}}(v)
+		a := New{{.Name}}(v)
 		v += delta
-		return c.Add(delta) == v && c.Load() == v
+		return a.Add(delta) == v && a.Load() == v
 	}, nil); err != nil {
 		t.Fatal(err)
 	}
@@ -119,9 +121,9 @@ func Test{{.Name}}Add(t *testing.T) {
 
 func Test{{.Name}}Increment(t *testing.T) {
 	if err := quick.Check(func(v {{.Type}}) bool {
-		c := New{{.Name}}(v)
+		a := New{{.Name}}(v)
 		v++
-		return c.Increment() == v && c.Load() == v
+		return a.Increment() == v && a.Load() == v
 	}, nil); err != nil {
 		t.Fatal(err)
 	}
@@ -129,9 +131,9 @@ func Test{{.Name}}Increment(t *testing.T) {
 
 func Test{{.Name}}Subtract(t *testing.T) {
 	if err := quick.Check(func(v, delta {{.Type}}) bool {
-		c := New{{.Name}}(v)
+		a := New{{.Name}}(v)
 		v -= delta
-		return c.Subtract(delta) == v && c.Load() == v
+		return a.Subtract(delta) == v && a.Load() == v
 	}, nil); err != nil {
 		t.Fatal(err)
 	}
@@ -139,9 +141,9 @@ func Test{{.Name}}Subtract(t *testing.T) {
 
 func Test{{.Name}}Decrement(t *testing.T) {
 	if err := quick.Check(func(v {{.Type}}) bool {
-		c := New{{.Name}}(v)
+		a := New{{.Name}}(v)
 		v--
-		return c.Decrement() == v && c.Load() == v
+		return a.Decrement() == v && a.Load() == v
 	}, nil); err != nil {
 		t.Fatal(err)
 	}
@@ -149,8 +151,8 @@ func Test{{.Name}}Decrement(t *testing.T) {
 
 func Test{{.Name}}Reset(t *testing.T) {
 	if err := quick.Check(func(v {{.Type}}) bool {
-		c := New{{.Name}}(v)
-		return c.Reset() == v && c.Load() == 0
+		a := New{{.Name}}(v)
+		return a.Reset() == v && a.Load() == 0
 	}, nil); err != nil {
 		t.Fatal(err)
 	}

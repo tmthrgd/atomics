@@ -13,8 +13,9 @@ import (
 )
 
 func TestUint32Default(t *testing.T) {
-	var c Uint32
-	if c.Load() != 0 {
+	var v Uint32
+
+	if v.Load() != 0 {
 		t.Fatal("invalid default value")
 	}
 }
@@ -26,8 +27,9 @@ func TestNewUint32(t *testing.T) {
 }
 
 func TestUint32UnsafeRaw(t *testing.T) {
-	var c Uint32
-	if c.UnsafeRaw() == nil {
+	var v Uint32
+
+	if v.UnsafeRaw() == nil {
 		t.Fatal("UnsafeRaw returned nil")
 	}
 }
@@ -42,9 +44,9 @@ func TestUint32Load(t *testing.T) {
 
 func TestUint32Store(t *testing.T) {
 	if err := quick.Check(func(v uint32) bool {
-		var c Uint32
-		c.Store(v)
-		return c.Load() == v
+		var a Uint32
+		a.Store(v)
+		return a.Load() == v
 	}, nil); err != nil {
 		t.Fatal(err)
 	}
@@ -52,8 +54,8 @@ func TestUint32Store(t *testing.T) {
 
 func TestUint32Swap(t *testing.T) {
 	if err := quick.Check(func(old, new uint32) bool {
-		c := NewUint32(old)
-		return c.Swap(new) == old && c.Load() == new
+		a := NewUint32(old)
+		return a.Swap(new) == old && a.Load() == new
 	}, nil); err != nil {
 		t.Fatal(err)
 	}
@@ -61,11 +63,11 @@ func TestUint32Swap(t *testing.T) {
 
 func TestUint32CompareAndSwap(t *testing.T) {
 	if err := quick.Check(func(old, new uint32) bool {
-		c := NewUint32(old)
-		return !c.CompareAndSwap(-old, new) &&
-			c.Load() == old &&
-			c.CompareAndSwap(old, new) &&
-			c.Load() == new
+		a := NewUint32(old)
+		return !a.CompareAndSwap(-old, new) &&
+			a.Load() == old &&
+			a.CompareAndSwap(old, new) &&
+			a.Load() == new
 	}, nil); err != nil {
 		t.Fatal(err)
 	}
@@ -73,9 +75,9 @@ func TestUint32CompareAndSwap(t *testing.T) {
 
 func TestUint32Add(t *testing.T) {
 	if err := quick.Check(func(v, delta uint32) bool {
-		c := NewUint32(v)
+		a := NewUint32(v)
 		v += delta
-		return c.Add(delta) == v && c.Load() == v
+		return a.Add(delta) == v && a.Load() == v
 	}, nil); err != nil {
 		t.Fatal(err)
 	}
@@ -83,9 +85,9 @@ func TestUint32Add(t *testing.T) {
 
 func TestUint32Increment(t *testing.T) {
 	if err := quick.Check(func(v uint32) bool {
-		c := NewUint32(v)
+		a := NewUint32(v)
 		v++
-		return c.Increment() == v && c.Load() == v
+		return a.Increment() == v && a.Load() == v
 	}, nil); err != nil {
 		t.Fatal(err)
 	}
@@ -93,9 +95,9 @@ func TestUint32Increment(t *testing.T) {
 
 func TestUint32Subtract(t *testing.T) {
 	if err := quick.Check(func(v, delta uint32) bool {
-		c := NewUint32(v)
+		a := NewUint32(v)
 		v -= delta
-		return c.Subtract(delta) == v && c.Load() == v
+		return a.Subtract(delta) == v && a.Load() == v
 	}, nil); err != nil {
 		t.Fatal(err)
 	}
@@ -103,9 +105,9 @@ func TestUint32Subtract(t *testing.T) {
 
 func TestUint32Decrement(t *testing.T) {
 	if err := quick.Check(func(v uint32) bool {
-		c := NewUint32(v)
+		a := NewUint32(v)
 		v--
-		return c.Decrement() == v && c.Load() == v
+		return a.Decrement() == v && a.Load() == v
 	}, nil); err != nil {
 		t.Fatal(err)
 	}
@@ -113,8 +115,8 @@ func TestUint32Decrement(t *testing.T) {
 
 func TestUint32Reset(t *testing.T) {
 	if err := quick.Check(func(v uint32) bool {
-		c := NewUint32(v)
-		return c.Reset() == v && c.Load() == 0
+		a := NewUint32(v)
+		return a.Reset() == v && a.Load() == 0
 	}, nil); err != nil {
 		t.Fatal(err)
 	}
