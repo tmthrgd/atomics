@@ -10,5 +10,5 @@ They rely on the [sync/atomic](https://golang.org/pkg/sync/atomic/) package and 
 syncmap package is a proposed addition to the sync package in the standard library.
 ([golang/go#18177](https://golang.org/issue/18177))
 
-See the [documentation](https://godoc.org/github.com/tmthrgd/counters?status.svg) for use. This
-package should be self-explanatory.
+See the [documentation](https://godoc.org/github.com/tmthrgd/counters) for use. This package
+should be self-explanatory.
