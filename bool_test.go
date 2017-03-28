@@ -78,3 +78,41 @@ func TestBoolReset(t *testing.T) {
 		t.Fatal("Reset failed")
 	}
 }
+
+func BenchmarkNewBool(b *testing.B) {
+	for n := 0; n < b.N; n++ {
+		NewBool(true)
+	}
+}
+
+func BenchmarkBoolLoad(b *testing.B) {
+	var v Bool
+
+	for n := 0; n < b.N; n++ {
+		v.Load()
+	}
+}
+
+func BenchmarkBoolStore(b *testing.B) {
+	var v Bool
+
+	for n := 0; n < b.N; n++ {
+		v.Store(true)
+	}
+}
+
+func BenchmarkBoolSwap(b *testing.B) {
+	var v Bool
+
+	for n := 0; n < b.N; n++ {
+		v.Store(true)
+	}
+}
+
+func BenchmarkBoolCompareAndSwap(b *testing.B) {
+	var v Bool
+
+	for n := 0; n < b.N; n++ {
+		v.CompareAndSwap(true, true)
+	}
+}
