@@ -21,36 +21,42 @@ func pointerToString(val unsafe.Pointer) string {
 // String provides an atomic string.
 type String struct {
 	noCopy noCopy
-	val    unsafe.Pointer
+	val    *string
+}
+
+type stringPtr struct {
+	val unsafe.Pointer
 }
 
 // NewString returns an atomic string with a given value.
 func NewString(val string) *String {
-	return &String{
-		val: unsafe.Pointer(&val),
-	}
+	return &String{val: &val}
 }
 
 // Load returns the value of the string.
 func (s *String) Load() string {
-	return pointerToString(atomic.LoadPointer(&s.val))
+	p := (*stringPtr)(unsafe.Pointer(s))
+	return pointerToString(atomic.LoadPointer(&p.val))
 }
 
 func (s *String) store(val string) {
-	atomic.StorePointer(&s.val, unsafe.Pointer(&val))
+	p := (*stringPtr)(unsafe.Pointer(s))
+	atomic.StorePointer(&p.val, unsafe.Pointer(&val))
 }
 
 // Store sets the value of the string.
 func (s *String) Store(val string) {
 	if val == "" {
-		atomic.StorePointer(&s.val, nil)
+		p := (*stringPtr)(unsafe.Pointer(s))
+		atomic.StorePointer(&p.val, nil)
 	} else {
 		s.store(val)
 	}
 }
 
 func (s *String) swap(new string) (old string) {
-	return pointerToString(atomic.SwapPointer(&s.val, unsafe.Pointer(&new)))
+	p := (*stringPtr)(unsafe.Pointer(s))
+	return pointerToString(atomic.SwapPointer(&p.val, unsafe.Pointer(&new)))
 }
 
 // Swap sets the value of the string and returns the old value.
@@ -65,5 +71,6 @@ func (s *String) Swap(new string) (old string) {
 // Reset sets the value of the string to "" and returns the old
 // value.
 func (s *String) Reset() (old string) {
-	return pointerToString(atomic.SwapPointer(&s.val, nil))
+	p := (*stringPtr)(unsafe.Pointer(s))
+	return pointerToString(atomic.SwapPointer(&p.val, nil))
 }
