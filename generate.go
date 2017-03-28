@@ -341,6 +341,16 @@ func (c *{{.Name}}) RangeStore(f func(key interface{}) (val {{.Type}}, ok bool))
 	})
 }
 
+// RangeSubtract subtracts the return value of f from
+// each counter.
+func (c *{{.Name}}) RangeSubtract(f func(key interface{}) (delta {{.Type}}, ok bool)) {
+	c.m.Range(func(key, val interface{}) bool {
+		delta, ok := f(key)
+		add{{.Name}}(val.(*{{.AtomicType}}), -delta)
+		return ok
+	})
+}
+
 // RangeAdd adds the return value of f to each counter.
 func (c *{{.Name}}) RangeAdd(f func(key interface{}) (delta {{.Type}}, ok bool)) {
 	c.m.Range(func(key, val interface{}) bool {

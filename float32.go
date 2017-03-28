@@ -110,6 +110,16 @@ func (c *Float32) RangeStore(f func(key interface{}) (val float32, ok bool)) {
 	})
 }
 
+// RangeSubtract subtracts the return value of f from
+// each counter.
+func (c *Float32) RangeSubtract(f func(key interface{}) (delta float32, ok bool)) {
+	c.m.Range(func(key, val interface{}) bool {
+		delta, ok := f(key)
+		addFloat32(val.(*uint32), -delta)
+		return ok
+	})
+}
+
 // RangeAdd adds the return value of f to each counter.
 func (c *Float32) RangeAdd(f func(key interface{}) (delta float32, ok bool)) {
 	c.m.Range(func(key, val interface{}) bool {
