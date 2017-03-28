@@ -46,6 +46,20 @@ func (c *Float32) CompareAndSwap(key interface{}, old, new float32) (swapped boo
 	return atomic.CompareAndSwapUint32(c.unsafeLoad(key), math.Float32bits(old), math.Float32bits(new))
 }
 
+// Add adds delta to the counter key.
+func (c *Float32) Add(key interface{}, delta float32) (new float32) {
+	ptr := c.unsafeLoad(key)
+
+	for {
+		old := atomic.LoadUint32(ptr)
+		new := math.Float32frombits(old) + delta
+
+		if atomic.CompareAndSwapUint32(ptr, old, math.Float32bits(new)) {
+			return new
+		}
+	}
+}
+
 // Reset is a wrapper for Swap(key, 0).
 func (c *Float32) Reset(key interface{}) (old float32) {
 	return c.Swap(key, 0)

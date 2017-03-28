@@ -68,6 +68,21 @@ func TestFloat64CompareAndSwap(t *testing.T) {
 	}
 }
 
+func TestFloat64Add(t *testing.T) {
+	var c Float64
+	c.Add(0, 2)
+
+	if c.Load(0) != 2 {
+		t.Fatal("Add failed")
+	}
+
+	c.Add(0, -4)
+
+	if c.Load(0) != -2 {
+		t.Fatal("Add failed")
+	}
+}
+
 func TestFloat64Reset(t *testing.T) {
 	var c Float64
 	c.Store(0, 2)

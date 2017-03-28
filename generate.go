@@ -272,6 +272,20 @@ func (c *{{.Name}}) CompareAndSwap(key interface{}, old, new {{.Type}}) (swapped
 	return atomic.CompareAndSwap{{.Atomic}}(c.unsafeLoad(key), math.{{.MathName}}bits(old), math.{{.MathName}}bits(new))
 }
 
+// Add adds delta to the counter key.
+func (c *{{.Name}}) Add(key interface{}, delta {{.Type}}) (new {{.Type}}) {
+	ptr := c.unsafeLoad(key)
+
+	for {
+		old := atomic.Load{{.Atomic}}(ptr)
+		new := math.{{.MathName}}frombits(old) + delta
+
+		if atomic.CompareAndSwap{{.Atomic}}(ptr, old, math.{{.MathName}}bits(new)) {
+			return new
+		}
+	}
+}
+
 // Reset is a wrapper for Swap(key, 0).
 func (c *{{.Name}}) Reset(key interface{}) (old {{.Type}}) {
 	return c.Swap(key, 0)
