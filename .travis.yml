@@ -2,7 +2,7 @@ language: go
 go:
     - 1.8
     - tip
-gobuild_args: -quickchecks 1000000
+script: go test -quickchecks 1000000 ./...
 matrix:
     fast_finish: true
     allow_failures:
