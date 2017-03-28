@@ -36,20 +36,34 @@ func (s *String) Load() string {
 	return pointerToString(atomic.LoadPointer(&s.val))
 }
 
+func (s *String) store(val string) {
+	atomic.StorePointer(&s.val, unsafe.Pointer(&val))
+}
+
 // Store sets the value of the string.
 func (s *String) Store(val string) {
-	atomic.StorePointer(&s.val, unsafe.Pointer(&val))
+	if val == "" {
+		atomic.StorePointer(&s.val, nil)
+	} else {
+		s.store(val)
+	}
+}
+
+func (s *String) swap(new string) (old string) {
+	return pointerToString(atomic.SwapPointer(&s.val, unsafe.Pointer(&new)))
 }
 
 // Swap sets the value of the string and returns the old value.
 func (s *String) Swap(new string) (old string) {
-	return pointerToString(atomic.SwapPointer(&s.val, unsafe.Pointer(&new)))
+	if new == "" {
+		return s.Reset()
+	}
+
+	return s.swap(new)
 }
 
 // Reset sets the value of the string to "" and returns the old
 // value.
-//
-// It is more efficient than Swap("") which causes an allocation.
 func (s *String) Reset() (old string) {
 	return pointerToString(atomic.SwapPointer(&s.val, nil))
 }

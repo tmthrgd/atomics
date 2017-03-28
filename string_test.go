@@ -90,11 +90,27 @@ func BenchmarkStringStore(b *testing.B) {
 	}
 }
 
+func BenchmarkStringStoreEmpty(b *testing.B) {
+	var s String
+
+	for n := 0; n < b.N; n++ {
+		s.Store("")
+	}
+}
+
 func BenchmarkStringSwap(b *testing.B) {
 	var s String
 
 	for n := 0; n < b.N; n++ {
 		s.Swap("x")
+	}
+}
+
+func BenchmarkStringSwapEmpty(b *testing.B) {
+	var s String
+
+	for n := 0; n < b.N; n++ {
+		s.Swap("")
 	}
 }
 
