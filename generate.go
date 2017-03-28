@@ -130,6 +130,11 @@ func (c *{{.Name}}) Decrement(key interface{}) (new {{.Type}}) {
 
 {{- else -}}
 
+// Subtract is a wrapper for Add(key, -delta)
+func (c *{{.Name}}) Subtract(key interface{}, delta {{.Type}}) (new {{.Type}}) {
+	return c.Add(key, -delta)
+}
+
 // Decrement is a wrapper for Add(key, -1).
 func (c *{{.Name}}) Decrement(key interface{}) (new {{.Type}}) {
 	return c.Add(key, -1)

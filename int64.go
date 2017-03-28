@@ -60,6 +60,11 @@ func (c *Int64) Increment(key interface{}) (new int64) {
 	return c.Add(key, 1)
 }
 
+// Subtract is a wrapper for Add(key, -delta)
+func (c *Int64) Subtract(key interface{}, delta int64) (new int64) {
+	return c.Add(key, -delta)
+}
+
 // Decrement is a wrapper for Add(key, -1).
 func (c *Int64) Decrement(key interface{}) (new int64) {
 	return c.Add(key, -1)
