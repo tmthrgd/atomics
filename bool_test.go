@@ -9,6 +9,7 @@ import "testing"
 
 func TestBoolDefault(t *testing.T) {
 	var b Bool
+
 	if b.Load() {
 		t.Fatal("invalid default value")
 	}
@@ -22,6 +23,7 @@ func TestNewBool(t *testing.T) {
 
 func TestBoolUnsafeRaw(t *testing.T) {
 	var b Bool
+
 	if b.UnsafeRaw() == nil {
 		t.Fatal("UnsafeRaw returned nil")
 	}
@@ -38,41 +40,41 @@ func TestBoolLoad(t *testing.T) {
 }
 
 func TestBoolStore(t *testing.T) {
-	var c Bool
+	var b Bool
 
-	if c.Store(true); !c.Load() {
+	if b.Store(true); !b.Load() {
 		t.Fatal("Store failed for true")
 	}
 
-	if c.Store(false); c.Load() {
+	if b.Store(false); b.Load() {
 		t.Fatal("Store failed for false")
 	}
 }
 
 func TestBoolSwap(t *testing.T) {
-	if c := NewBool(false); c.Swap(true) || !c.Load() {
+	if b := NewBool(false); b.Swap(true) || !b.Load() {
 		t.Fatal("Swap failed for true")
 	}
 
-	if c := NewBool(true); !c.Swap(false) || c.Load() {
+	if b := NewBool(true); !b.Swap(false) || b.Load() {
 		t.Fatal("Swap failed for false")
 	}
 }
 
 func TestBoolCompareAndSwap(t *testing.T) {
-	var c Bool
+	var b Bool
 
-	if c.CompareAndSwap(true, true) || c.Load() {
+	if b.CompareAndSwap(true, true) || b.Load() {
 		t.Fatal("CompareAndSwap should not have swapped")
 	}
 
-	if !c.CompareAndSwap(false, true) || !c.Load() {
+	if !b.CompareAndSwap(false, true) || !b.Load() {
 		t.Fatal("CompareAndSwap should have swapped")
 	}
 }
 
 func TestBoolReset(t *testing.T) {
-	if c := NewBool(true); !c.Reset() || c.Load() {
+	if b := NewBool(true); !b.Reset() || b.Load() {
 		t.Fatal("Reset failed")
 	}
 }
