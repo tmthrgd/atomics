@@ -61,6 +61,11 @@ func (b *Bool) CompareAndSwap(old, new bool) (swapped bool) {
 	return atomic.CompareAndSwapUint32(&b.val, boolToUint32(old), boolToUint32(new))
 }
 
+// Set is a wrapper for Swap(true).
+func (b *Bool) Set() (old bool) {
+	return b.Swap(true)
+}
+
 // Reset is a wrapper for Swap(false).
 func (b *Bool) Reset() (old bool) {
 	return b.Swap(false)

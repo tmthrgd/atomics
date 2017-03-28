@@ -73,6 +73,14 @@ func TestBoolCompareAndSwap(t *testing.T) {
 	}
 }
 
+func TestBoolSet(t *testing.T) {
+	var b Bool
+
+	if b.Set() || !b.Load() {
+		t.Fatal("Set failed")
+	}
+}
+
 func TestBoolReset(t *testing.T) {
 	if b := NewBool(true); !b.Reset() || b.Load() {
 		t.Fatal("Reset failed")
