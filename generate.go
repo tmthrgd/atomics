@@ -327,6 +327,22 @@ func (c *{{.Name}}) Keys() []interface{} {
 	return keys
 }
 
+// UnsafeRange calls f with a pointer to each
+// counter.
+//
+// It is only safe to access val with methods from
+// the sync/atomic package. It must not be manually
+// dereferenced.
+//
+// This uses the underlying {{.AtomicType}}, to convert this
+// to and from a {{.Type}}, use math.{{.MathName}}frombits
+// and math.{{.MathName}}bits respectively.
+func (c *{{.Name}}) UnsafeRange(f func(key interface{}, val *{{.AtomicType}}) bool) {
+	c.m.Range(func(key, val interface{}) bool {
+		return f(key, val.(*{{.AtomicType}}))
+	})
+}
+
 // RangeKeys calls f with the key of each counter.
 func (c *{{.Name}}) RangeKeys(f func(key interface{}) bool) {
 	c.m.Range(func(key, val interface{}) bool {

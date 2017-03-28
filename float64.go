@@ -96,6 +96,22 @@ func (c *Float64) Keys() []interface{} {
 	return keys
 }
 
+// UnsafeRange calls f with a pointer to each
+// counter.
+//
+// It is only safe to access val with methods from
+// the sync/atomic package. It must not be manually
+// dereferenced.
+//
+// This uses the underlying uint64, to convert this
+// to and from a float64, use math.Float64frombits
+// and math.Float64bits respectively.
+func (c *Float64) UnsafeRange(f func(key interface{}, val *uint64) bool) {
+	c.m.Range(func(key, val interface{}) bool {
+		return f(key, val.(*uint64))
+	})
+}
+
 // RangeKeys calls f with the key of each counter.
 func (c *Float64) RangeKeys(f func(key interface{}) bool) {
 	c.m.Range(func(key, val interface{}) bool {
