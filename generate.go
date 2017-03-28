@@ -80,7 +80,11 @@ type {{.Name}} struct {
 // methods from the sync/atomic package. It must
 // not be manually dereferenced.
 func (c *{{.Name}}) UnsafeLoad(key interface{}) *{{.Type}} {
-	v, _ := c.m.LoadOrStore(key, new({{.Type}}))
+	v, ok := c.m.Load(key)
+	if !ok {
+		v, _ = c.m.LoadOrStore(key, new({{.Type}}))
+	}
+
 	return v.(*{{.Type}})
 }
 
@@ -260,7 +264,11 @@ type {{.Name}} struct {
 // to and from a {{.Type}}, use math.{{.MathName}}frombits
 // and math.{{.MathName}}bits respectively.
 func (c *{{.Name}}) UnsafeLoad(key interface{}) *{{.AtomicType}} {
-	v, _ := c.m.LoadOrStore(key, new({{.AtomicType}}))
+	v, ok := c.m.Load(key)
+	if !ok {
+		v, _ = c.m.LoadOrStore(key, new({{.AtomicType}}))
+	}
+
 	return v.(*{{.AtomicType}})
 }
 

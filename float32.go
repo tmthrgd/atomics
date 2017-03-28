@@ -29,7 +29,11 @@ type Float32 struct {
 // to and from a float32, use math.Float32frombits
 // and math.Float32bits respectively.
 func (c *Float32) UnsafeLoad(key interface{}) *uint32 {
-	v, _ := c.m.LoadOrStore(key, new(uint32))
+	v, ok := c.m.Load(key)
+	if !ok {
+		v, _ = c.m.LoadOrStore(key, new(uint32))
+	}
+
 	return v.(*uint32)
 }
 

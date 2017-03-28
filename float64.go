@@ -29,7 +29,11 @@ type Float64 struct {
 // to and from a float64, use math.Float64frombits
 // and math.Float64bits respectively.
 func (c *Float64) UnsafeLoad(key interface{}) *uint64 {
-	v, _ := c.m.LoadOrStore(key, new(uint64))
+	v, ok := c.m.Load(key)
+	if !ok {
+		v, _ = c.m.LoadOrStore(key, new(uint64))
+	}
+
 	return v.(*uint64)
 }
 

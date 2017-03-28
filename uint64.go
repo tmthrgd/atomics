@@ -24,7 +24,11 @@ type Uint64 struct {
 // methods from the sync/atomic package. It must
 // not be manually dereferenced.
 func (c *Uint64) UnsafeLoad(key interface{}) *uint64 {
-	v, _ := c.m.LoadOrStore(key, new(uint64))
+	v, ok := c.m.Load(key)
+	if !ok {
+		v, _ = c.m.LoadOrStore(key, new(uint64))
+	}
+
 	return v.(*uint64)
 }
 
