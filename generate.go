@@ -206,19 +206,19 @@ func (c *{{.Name}}) RangeAdd(f func(key interface{}) (delta {{.Type}}, ok bool))
 	})
 }
 
-{{- if .Unsigned}}
-
 // RangeSubtract subtracts the return value of f from
 // each counter.
 func (c *{{.Name}}) RangeSubtract(f func(key interface{}) (delta {{.Type}}, ok bool)) {
 	c.m.Range(func(key, val interface{}) bool {
 		delta, ok := f(key)
+{{- if .Unsigned}}
 		atomic.Add{{.Atomic}}(val.(*{{.Type}}), ^(delta - 1))
+{{- else}}
+		atomic.Add{{.Atomic}}(val.(*{{.Type}}), -delta)
+{{- end}}
 		return ok
 	})
 }
-
-{{- end}}
 
 // RangeReset resets each counter and calls f with the
 // old value.

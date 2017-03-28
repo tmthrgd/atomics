@@ -134,6 +134,16 @@ func (c *Int64) RangeAdd(f func(key interface{}) (delta int64, ok bool)) {
 	})
 }
 
+// RangeSubtract subtracts the return value of f from
+// each counter.
+func (c *Int64) RangeSubtract(f func(key interface{}) (delta int64, ok bool)) {
+	c.m.Range(func(key, val interface{}) bool {
+		delta, ok := f(key)
+		atomic.AddInt64(val.(*int64), -delta)
+		return ok
+	})
+}
+
 // RangeReset resets each counter and calls f with the
 // old value.
 func (c *Int64) RangeReset(f func(key interface{}, old int64) bool) {
