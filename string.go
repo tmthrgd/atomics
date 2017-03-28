@@ -18,6 +18,18 @@ func pointerToString(val unsafe.Pointer) string {
 	return ""
 }
 
+func addressOfString(val string) unsafe.Pointer {
+	return unsafe.Pointer(&val)
+}
+
+func stringToPointer(val string) unsafe.Pointer {
+	if val != "" {
+		return addressOfString(val)
+	}
+
+	return nil
+}
+
 // String provides an atomic string.
 type String struct {
 	noCopy noCopy
@@ -39,38 +51,19 @@ func (s *String) Load() string {
 	return pointerToString(atomic.LoadPointer(&p.val))
 }
 
-func (s *String) store(val string) {
-	p := (*stringPtr)(unsafe.Pointer(s))
-	atomic.StorePointer(&p.val, unsafe.Pointer(&val))
-}
-
 // Store sets the value of the string.
 func (s *String) Store(val string) {
-	if val == "" {
-		p := (*stringPtr)(unsafe.Pointer(s))
-		atomic.StorePointer(&p.val, nil)
-	} else {
-		s.store(val)
-	}
-}
-
-func (s *String) swap(new string) (old string) {
 	p := (*stringPtr)(unsafe.Pointer(s))
-	return pointerToString(atomic.SwapPointer(&p.val, unsafe.Pointer(&new)))
+	atomic.StorePointer(&p.val, stringToPointer(val))
 }
 
 // Swap sets the value of the string and returns the old value.
 func (s *String) Swap(new string) (old string) {
-	if new == "" {
-		return s.Reset()
-	}
-
-	return s.swap(new)
+	p := (*stringPtr)(unsafe.Pointer(s))
+	return pointerToString(atomic.SwapPointer(&p.val, stringToPointer(new)))
 }
 
-// Reset sets the value of the string to "" and returns the old
-// value.
+// Reset is a wrapper for Swap("").
 func (s *String) Reset() (old string) {
-	p := (*stringPtr)(unsafe.Pointer(s))
-	return pointerToString(atomic.SwapPointer(&p.val, nil))
+	return s.Swap("")
 }
