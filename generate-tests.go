@@ -48,6 +48,13 @@ import (
 	"testing/quick"
 )
 
+func Test{{.Name}}Default(t *testing.T) {
+	var c {{.Name}}
+	if c.Load() != 0 {
+		t.Fatal("invalid default value")
+	}
+}
+
 func TestNew{{.Name}}(t *testing.T) {
 	if New{{.Name}}(0) == nil {
 		t.Fatal("New{{.Name}} returned nil")

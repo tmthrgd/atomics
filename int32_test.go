@@ -12,6 +12,13 @@ import (
 	"testing/quick"
 )
 
+func TestInt32Default(t *testing.T) {
+	var c Int32
+	if c.Load() != 0 {
+		t.Fatal("invalid default value")
+	}
+}
+
 func TestNewInt32(t *testing.T) {
 	if NewInt32(0) == nil {
 		t.Fatal("NewInt32 returned nil")

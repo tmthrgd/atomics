@@ -12,6 +12,13 @@ import (
 	"testing/quick"
 )
 
+func TestUint64Default(t *testing.T) {
+	var c Uint64
+	if c.Load() != 0 {
+		t.Fatal("invalid default value")
+	}
+}
+
 func TestNewUint64(t *testing.T) {
 	if NewUint64(0) == nil {
 		t.Fatal("NewUint64 returned nil")

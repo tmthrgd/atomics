@@ -12,6 +12,13 @@ import (
 	"testing/quick"
 )
 
+func TestFloat64Default(t *testing.T) {
+	var c Float64
+	if c.Load() != 0 {
+		t.Fatal("invalid default value")
+	}
+}
+
 func TestNewFloat64(t *testing.T) {
 	if NewFloat64(0) == nil {
 		t.Fatal("NewFloat64 returned nil")

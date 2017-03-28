@@ -12,6 +12,13 @@ import (
 	"testing/quick"
 )
 
+func TestFloat32Default(t *testing.T) {
+	var c Float32
+	if c.Load() != 0 {
+		t.Fatal("invalid default value")
+	}
+}
+
 func TestNewFloat32(t *testing.T) {
 	if NewFloat32(0) == nil {
 		t.Fatal("NewFloat32 returned nil")
