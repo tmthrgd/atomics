@@ -55,7 +55,7 @@ func (b *Bool) Swap(new bool) (old bool) {
 }
 
 // CompareAndSwap sets the value of the bool to new but only
-// if it currently has the value old. It returns true if the swapped
+// if it currently has the value old. It returns true if the swap
 // succeeded.
 func (b *Bool) CompareAndSwap(old, new bool) (swapped bool) {
 	return atomic.CompareAndSwapUint32(&b.val, boolToUint32(old), boolToUint32(new))
