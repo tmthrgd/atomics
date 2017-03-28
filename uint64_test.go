@@ -107,11 +107,10 @@ func TestDecrement(t *testing.T) {
 	c.Store(0, 2)
 	c.Decrement(0)
 
-	if c.Load(0) != 1 {
+	if c.Reset(0) != 1 {
 		t.Fatal("Decrement failed")
 	}
 
-	c.Decrement(0)
 	c.Decrement(0)
 
 	if c.Load(0) != ^uint64(0) {
