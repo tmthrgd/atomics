@@ -12,6 +12,7 @@ import (
 
 func TestStringDefault(t *testing.T) {
 	var s String
+
 	if s.Load() != "" {
 		t.Fatal("invalid default value")
 	}
@@ -19,10 +20,6 @@ func TestStringDefault(t *testing.T) {
 
 func TestNewString(t *testing.T) {
 	if NewString("") == nil {
-		t.Fatal("NewString returned nil")
-	}
-
-	if NewString("x") == nil {
 		t.Fatal("NewString returned nil")
 	}
 }
@@ -45,15 +42,9 @@ func TestStringStore(t *testing.T) {
 	}
 }
 
-func BenchmarkNewStringEmpty(b *testing.B) {
+func BenchmarkNewString(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		NewString("")
-	}
-}
-
-func BenchmarkNewStringNonEmpty(b *testing.B) {
-	for n := 0; n < b.N; n++ {
-		NewString("x")
 	}
 }
 

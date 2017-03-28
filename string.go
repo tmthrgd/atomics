@@ -5,29 +5,28 @@
 
 package atomics
 
-import "sync/atomic"
+import (
+	"sync/atomic"
+	"unsafe"
+)
 
 // String provides an atomic string.
 type String struct {
 	noCopy noCopy
-	val    atomic.Value
+	val    unsafe.Pointer
 }
 
 // NewString returns an atomic string with a given value.
 func NewString(val string) *String {
-	if val == "" {
-		return new(String)
+	return &String{
+		val: unsafe.Pointer(&val),
 	}
-
-	var s String
-	s.val.Store(val)
-	return &s
 }
 
 // Load returns the value of the string.
 func (s *String) Load() string {
-	if v, ok := s.val.Load().(string); ok {
-		return v
+	if val := atomic.LoadPointer(&s.val); val != nil {
+		return *(*string)(val)
 	}
 
 	return ""
@@ -35,5 +34,5 @@ func (s *String) Load() string {
 
 // Store sets the value of the string.
 func (s *String) Store(val string) {
-	s.val.Store(val)
+	atomic.StorePointer(&s.val, unsafe.Pointer(&val))
 }
