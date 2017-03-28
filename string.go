@@ -13,19 +13,18 @@ import (
 // String provides an atomic string.
 type String struct {
 	noCopy noCopy
-	val    unsafe.Pointer
+	val    *string
 }
 
 // NewString returns an atomic string with a given value.
 func NewString(val string) *String {
-	return &String{
-		val: unsafe.Pointer(&val),
-	}
+	return &String{val: &val}
 }
 
 // Load returns the value of the string.
 func (s *String) Load() string {
-	if val := atomic.LoadPointer(&s.val); val != nil {
+	val := atomic.LoadPointer((*unsafe.Pointer)(unsafe.Pointer(&s.val)))
+	if val != nil {
 		return *(*string)(val)
 	}
 
@@ -34,5 +33,5 @@ func (s *String) Load() string {
 
 // Store sets the value of the string.
 func (s *String) Store(val string) {
-	atomic.StorePointer(&s.val, unsafe.Pointer(&val))
+	atomic.StorePointer((*unsafe.Pointer)(unsafe.Pointer(&s.val)), unsafe.Pointer(&val))
 }
