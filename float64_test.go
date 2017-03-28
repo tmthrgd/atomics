@@ -83,6 +83,21 @@ func TestFloat64Add(t *testing.T) {
 	}
 }
 
+func TestFloat64Subtract(t *testing.T) {
+	var c Float64
+	c.Subtract(0, 2)
+
+	if c.Load(0) != -2 {
+		t.Fatal("Subtract failed")
+	}
+
+	c.Subtract(0, -4)
+
+	if c.Load(0) != 2 {
+		t.Fatal("Subtract failed")
+	}
+}
+
 func TestFloat64Reset(t *testing.T) {
 	var c Float64
 	c.Store(0, 2)

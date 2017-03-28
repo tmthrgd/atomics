@@ -293,6 +293,11 @@ func (c *{{.Name}}) Add(key interface{}, delta {{.Type}}) (new {{.Type}}) {
 	return add{{.Name}}(c.unsafeLoad(key), delta)
 }
 
+// Subtract is a wrapper for Add(key, -delta)
+func (c *{{.Name}}) Subtract(key interface{}, delta {{.Type}}) (new {{.Type}}) {
+	return c.Add(key, -delta)
+}
+
 // Reset is a wrapper for Swap(key, 0).
 func (c *{{.Name}}) Reset(key interface{}) (old {{.Type}}) {
 	return c.Swap(key, 0)

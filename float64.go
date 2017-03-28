@@ -62,6 +62,11 @@ func (c *Float64) Add(key interface{}, delta float64) (new float64) {
 	return addFloat64(c.unsafeLoad(key), delta)
 }
 
+// Subtract is a wrapper for Add(key, -delta)
+func (c *Float64) Subtract(key interface{}, delta float64) (new float64) {
+	return c.Add(key, -delta)
+}
+
 // Reset is a wrapper for Swap(key, 0).
 func (c *Float64) Reset(key interface{}) (old float64) {
 	return c.Swap(key, 0)
