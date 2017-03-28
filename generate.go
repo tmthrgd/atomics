@@ -250,31 +250,40 @@ type {{.Name}} struct {
 	m syncmap.Map // map[interface{}]*{{.AtomicType}}
 }
 
-func (c *{{.Name}}) unsafeLoad(key interface{}) *{{.AtomicType}} {
+// UnsafeLoad returns a pointer to the counter key.
+//
+// It is only safe to access the return value with
+// methods from the sync/atomic package. It must
+// not be manually dereferenced.
+//
+// This returns the underlying {{.AtomicType}}, to convert this
+// to and from a {{.Type}}, use math.{{.MathName}}frombits
+// and math.{{.MathName}}bits respectively.
+func (c *{{.Name}}) UnsafeLoad(key interface{}) *{{.AtomicType}} {
 	v, _ := c.m.LoadOrStore(key, new({{.AtomicType}}))
 	return v.(*{{.AtomicType}})
 }
 
 // Load returns the value of the counter key.
 func (c *{{.Name}}) Load(key interface{}) (val {{.Type}}) {
-	return math.{{.MathName}}frombits(atomic.Load{{.Atomic}}(c.unsafeLoad(key)))
+	return math.{{.MathName}}frombits(atomic.Load{{.Atomic}}(c.UnsafeLoad(key)))
 }
 
 // Store sets the value of the counter key.
 func (c *{{.Name}}) Store(key interface{}, val {{.Type}}) {
-	atomic.Store{{.Atomic}}(c.unsafeLoad(key), math.{{.MathName}}bits(val))
+	atomic.Store{{.Atomic}}(c.UnsafeLoad(key), math.{{.MathName}}bits(val))
 }
 
 // Swap sets the value of the counter key and returns the
 // old value.
 func (c *{{.Name}}) Swap(key interface{}, new {{.Type}}) (old {{.Type}}) {
-	return math.{{.MathName}}frombits(atomic.Swap{{.Atomic}}(c.unsafeLoad(key), math.{{.MathName}}bits(new)))
+	return math.{{.MathName}}frombits(atomic.Swap{{.Atomic}}(c.UnsafeLoad(key), math.{{.MathName}}bits(new)))
 }
 
 // CompareAndSwap sets the value of the counter key to new
 // but only if it currently has the value old.
 func (c *{{.Name}}) CompareAndSwap(key interface{}, old, new {{.Type}}) (swapped bool) {
-	return atomic.CompareAndSwap{{.Atomic}}(c.unsafeLoad(key), math.{{.MathName}}bits(old), math.{{.MathName}}bits(new))
+	return atomic.CompareAndSwap{{.Atomic}}(c.UnsafeLoad(key), math.{{.MathName}}bits(old), math.{{.MathName}}bits(new))
 }
 
 func add{{.Name}}(ptr *{{.AtomicType}}, delta {{.Type}}) (new {{.Type}}) {
@@ -290,7 +299,7 @@ func add{{.Name}}(ptr *{{.AtomicType}}, delta {{.Type}}) (new {{.Type}}) {
 
 // Add adds delta to the counter key.
 func (c *{{.Name}}) Add(key interface{}, delta {{.Type}}) (new {{.Type}}) {
-	return add{{.Name}}(c.unsafeLoad(key), delta)
+	return add{{.Name}}(c.UnsafeLoad(key), delta)
 }
 
 // Subtract is a wrapper for Add(key, -delta)

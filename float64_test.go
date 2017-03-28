@@ -10,7 +10,7 @@ import "testing"
 func TestFloat64UnsafeLoad(t *testing.T) {
 	var c Float64
 
-	if c.unsafeLoad(0) == nil {
+	if c.UnsafeLoad(0) == nil {
 		t.Fatal("UnsafeLoad returned nil")
 	}
 }

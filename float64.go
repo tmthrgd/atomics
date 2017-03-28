@@ -19,31 +19,40 @@ type Float64 struct {
 	m syncmap.Map // map[interface{}]*uint64
 }
 
-func (c *Float64) unsafeLoad(key interface{}) *uint64 {
+// UnsafeLoad returns a pointer to the counter key.
+//
+// It is only safe to access the return value with
+// methods from the sync/atomic package. It must
+// not be manually dereferenced.
+//
+// This returns the underlying uint64, to convert this
+// to and from a float64, use math.Float64frombits
+// and math.Float64bits respectively.
+func (c *Float64) UnsafeLoad(key interface{}) *uint64 {
 	v, _ := c.m.LoadOrStore(key, new(uint64))
 	return v.(*uint64)
 }
 
 // Load returns the value of the counter key.
 func (c *Float64) Load(key interface{}) (val float64) {
-	return math.Float64frombits(atomic.LoadUint64(c.unsafeLoad(key)))
+	return math.Float64frombits(atomic.LoadUint64(c.UnsafeLoad(key)))
 }
 
 // Store sets the value of the counter key.
 func (c *Float64) Store(key interface{}, val float64) {
-	atomic.StoreUint64(c.unsafeLoad(key), math.Float64bits(val))
+	atomic.StoreUint64(c.UnsafeLoad(key), math.Float64bits(val))
 }
 
 // Swap sets the value of the counter key and returns the
 // old value.
 func (c *Float64) Swap(key interface{}, new float64) (old float64) {
-	return math.Float64frombits(atomic.SwapUint64(c.unsafeLoad(key), math.Float64bits(new)))
+	return math.Float64frombits(atomic.SwapUint64(c.UnsafeLoad(key), math.Float64bits(new)))
 }
 
 // CompareAndSwap sets the value of the counter key to new
 // but only if it currently has the value old.
 func (c *Float64) CompareAndSwap(key interface{}, old, new float64) (swapped bool) {
-	return atomic.CompareAndSwapUint64(c.unsafeLoad(key), math.Float64bits(old), math.Float64bits(new))
+	return atomic.CompareAndSwapUint64(c.UnsafeLoad(key), math.Float64bits(old), math.Float64bits(new))
 }
 
 func addFloat64(ptr *uint64, delta float64) (new float64) {
@@ -59,7 +68,7 @@ func addFloat64(ptr *uint64, delta float64) (new float64) {
 
 // Add adds delta to the counter key.
 func (c *Float64) Add(key interface{}, delta float64) (new float64) {
-	return addFloat64(c.unsafeLoad(key), delta)
+	return addFloat64(c.UnsafeLoad(key), delta)
 }
 
 // Subtract is a wrapper for Add(key, -delta)

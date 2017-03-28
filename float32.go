@@ -19,31 +19,40 @@ type Float32 struct {
 	m syncmap.Map // map[interface{}]*uint32
 }
 
-func (c *Float32) unsafeLoad(key interface{}) *uint32 {
+// UnsafeLoad returns a pointer to the counter key.
+//
+// It is only safe to access the return value with
+// methods from the sync/atomic package. It must
+// not be manually dereferenced.
+//
+// This returns the underlying uint32, to convert this
+// to and from a float32, use math.Float32frombits
+// and math.Float32bits respectively.
+func (c *Float32) UnsafeLoad(key interface{}) *uint32 {
 	v, _ := c.m.LoadOrStore(key, new(uint32))
 	return v.(*uint32)
 }
 
 // Load returns the value of the counter key.
 func (c *Float32) Load(key interface{}) (val float32) {
-	return math.Float32frombits(atomic.LoadUint32(c.unsafeLoad(key)))
+	return math.Float32frombits(atomic.LoadUint32(c.UnsafeLoad(key)))
 }
 
 // Store sets the value of the counter key.
 func (c *Float32) Store(key interface{}, val float32) {
-	atomic.StoreUint32(c.unsafeLoad(key), math.Float32bits(val))
+	atomic.StoreUint32(c.UnsafeLoad(key), math.Float32bits(val))
 }
 
 // Swap sets the value of the counter key and returns the
 // old value.
 func (c *Float32) Swap(key interface{}, new float32) (old float32) {
-	return math.Float32frombits(atomic.SwapUint32(c.unsafeLoad(key), math.Float32bits(new)))
+	return math.Float32frombits(atomic.SwapUint32(c.UnsafeLoad(key), math.Float32bits(new)))
 }
 
 // CompareAndSwap sets the value of the counter key to new
 // but only if it currently has the value old.
 func (c *Float32) CompareAndSwap(key interface{}, old, new float32) (swapped bool) {
-	return atomic.CompareAndSwapUint32(c.unsafeLoad(key), math.Float32bits(old), math.Float32bits(new))
+	return atomic.CompareAndSwapUint32(c.UnsafeLoad(key), math.Float32bits(old), math.Float32bits(new))
 }
 
 func addFloat32(ptr *uint32, delta float32) (new float32) {
@@ -59,7 +68,7 @@ func addFloat32(ptr *uint32, delta float32) (new float32) {
 
 // Add adds delta to the counter key.
 func (c *Float32) Add(key interface{}, delta float32) (new float32) {
-	return addFloat32(c.unsafeLoad(key), delta)
+	return addFloat32(c.UnsafeLoad(key), delta)
 }
 
 // Subtract is a wrapper for Add(key, -delta)
