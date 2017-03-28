@@ -53,7 +53,7 @@ func (v *Float32) Swap(new float32) (old float32) {
 }
 
 // CompareAndSwap sets the value of the float32 to new but only
-// if it currently has the value old. It returns true if the swapped
+// if it currently has the value old. It returns true if the swap
 // succeeded.
 func (v *Float32) CompareAndSwap(old, new float32) (swapped bool) {
 	return atomic.CompareAndSwapUint32(&v.val, math.Float32bits(old), math.Float32bits(new))

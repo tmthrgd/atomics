@@ -44,7 +44,7 @@ func (v *Int64) Swap(new int64) (old int64) {
 }
 
 // CompareAndSwap sets the value of the int64 to new but only
-// if it currently has the value old. It returns true if the swapped
+// if it currently has the value old. It returns true if the swap
 // succeeded.
 func (v *Int64) CompareAndSwap(old, new int64) (swapped bool) {
 	return atomic.CompareAndSwapInt64(&v.val, old, new)

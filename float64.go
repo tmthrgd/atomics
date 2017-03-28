@@ -53,7 +53,7 @@ func (v *Float64) Swap(new float64) (old float64) {
 }
 
 // CompareAndSwap sets the value of the float64 to new but only
-// if it currently has the value old. It returns true if the swapped
+// if it currently has the value old. It returns true if the swap
 // succeeded.
 func (v *Float64) CompareAndSwap(old, new float64) (swapped bool) {
 	return atomic.CompareAndSwapUint64(&v.val, math.Float64bits(old), math.Float64bits(new))

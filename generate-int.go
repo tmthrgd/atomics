@@ -81,7 +81,7 @@ func (v *{{.Name}}) Swap(new {{.Type}}) (old {{.Type}}) {
 }
 
 // CompareAndSwap sets the value of the {{.Type}} to new but only
-// if it currently has the value old. It returns true if the swapped
+// if it currently has the value old. It returns true if the swap
 // succeeded.
 func (v *{{.Name}}) CompareAndSwap(old, new {{.Type}}) (swapped bool) {
 	return atomic.CompareAndSwap{{.Atomic}}(&v.val, old, new)
