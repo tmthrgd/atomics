@@ -15,6 +15,10 @@ type String struct {
 
 // NewString returns an atomic string with a given value.
 func NewString(val string) *String {
+	if val == "" {
+		return new(String)
+	}
+
 	var s String
 	s.val.Store(val)
 	return &s

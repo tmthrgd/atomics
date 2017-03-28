@@ -21,6 +21,10 @@ func TestNewString(t *testing.T) {
 	if NewString("") == nil {
 		t.Fatal("NewString returned nil")
 	}
+
+	if NewString("x") == nil {
+		t.Fatal("NewString returned nil")
+	}
 }
 
 func TestStringLoad(t *testing.T) {
@@ -38,5 +42,17 @@ func TestStringStore(t *testing.T) {
 		return s.Load() == v
 	}, nil); err != nil {
 		t.Fatal(err)
+	}
+}
+
+func BenchmarkNewStringEmpty(b *testing.B) {
+	for n := 0; n < b.N; n++ {
+		var _ = NewString("")
+	}
+}
+
+func BenchmarkNewStringNonEmpty(b *testing.B) {
+	for n := 0; n < b.N; n++ {
+		var _ = NewString("x")
 	}
 }
