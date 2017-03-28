@@ -47,12 +47,36 @@ func TestStringStore(t *testing.T) {
 
 func BenchmarkNewStringEmpty(b *testing.B) {
 	for n := 0; n < b.N; n++ {
-		var _ = NewString("")
+		NewString("")
 	}
 }
 
 func BenchmarkNewStringNonEmpty(b *testing.B) {
 	for n := 0; n < b.N; n++ {
-		var _ = NewString("x")
+		NewString("x")
+	}
+}
+
+func BenchmarkStringLoad(b *testing.B) {
+	s := NewString("x")
+
+	for n := 0; n < b.N; n++ {
+		s.Load()
+	}
+}
+
+func BenchmarkStringLoadDefault(b *testing.B) {
+	var s String
+
+	for n := 0; n < b.N; n++ {
+		s.Load()
+	}
+}
+
+func BenchmarkStringStore(b *testing.B) {
+	var s String
+
+	for n := 0; n < b.N; n++ {
+		s.Store("x")
 	}
 }
