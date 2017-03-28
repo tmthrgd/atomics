@@ -105,7 +105,7 @@ func BenchmarkBoolSwap(b *testing.B) {
 	var v Bool
 
 	for n := 0; n < b.N; n++ {
-		v.Store(true)
+		v.Swap(true)
 	}
 }
 
