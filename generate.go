@@ -272,10 +272,7 @@ func (c *{{.Name}}) CompareAndSwap(key interface{}, old, new {{.Type}}) (swapped
 	return atomic.CompareAndSwap{{.Atomic}}(c.unsafeLoad(key), math.{{.MathName}}bits(old), math.{{.MathName}}bits(new))
 }
 
-// Add adds delta to the counter key.
-func (c *{{.Name}}) Add(key interface{}, delta {{.Type}}) (new {{.Type}}) {
-	ptr := c.unsafeLoad(key)
-
+func add{{.Name}}(ptr *{{.AtomicType}}, delta {{.Type}}) (new {{.Type}}) {
 	for {
 		old := atomic.Load{{.Atomic}}(ptr)
 		new := math.{{.MathName}}frombits(old) + delta
@@ -284,6 +281,11 @@ func (c *{{.Name}}) Add(key interface{}, delta {{.Type}}) (new {{.Type}}) {
 			return new
 		}
 	}
+}
+
+// Add adds delta to the counter key.
+func (c *{{.Name}}) Add(key interface{}, delta {{.Type}}) (new {{.Type}}) {
+	return add{{.Name}}(c.unsafeLoad(key), delta)
 }
 
 // Reset is a wrapper for Swap(key, 0).
@@ -325,6 +327,15 @@ func (c *{{.Name}}) RangeStore(f func(key interface{}) (val {{.Type}}, ok bool))
 	c.m.Range(func(key, val interface{}) bool {
 		v, ok := f(key)
 		atomic.Store{{.Atomic}}(val.(*{{.AtomicType}}), math.{{.MathName}}bits(v))
+		return ok
+	})
+}
+
+// RangeAdd adds the return value of f to each counter.
+func (c *{{.Name}}) RangeAdd(f func(key interface{}) (delta {{.Type}}, ok bool)) {
+	c.m.Range(func(key, val interface{}) bool {
+		delta, ok := f(key)
+		add{{.Name}}(val.(*{{.AtomicType}}), delta)
 		return ok
 	})
 }

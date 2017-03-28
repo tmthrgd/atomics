@@ -46,10 +46,7 @@ func (c *Float64) CompareAndSwap(key interface{}, old, new float64) (swapped boo
 	return atomic.CompareAndSwapUint64(c.unsafeLoad(key), math.Float64bits(old), math.Float64bits(new))
 }
 
-// Add adds delta to the counter key.
-func (c *Float64) Add(key interface{}, delta float64) (new float64) {
-	ptr := c.unsafeLoad(key)
-
+func addFloat64(ptr *uint64, delta float64) (new float64) {
 	for {
 		old := atomic.LoadUint64(ptr)
 		new := math.Float64frombits(old) + delta
@@ -58,6 +55,11 @@ func (c *Float64) Add(key interface{}, delta float64) (new float64) {
 			return new
 		}
 	}
+}
+
+// Add adds delta to the counter key.
+func (c *Float64) Add(key interface{}, delta float64) (new float64) {
+	return addFloat64(c.unsafeLoad(key), delta)
 }
 
 // Reset is a wrapper for Swap(key, 0).
@@ -99,6 +101,15 @@ func (c *Float64) RangeStore(f func(key interface{}) (val float64, ok bool)) {
 	c.m.Range(func(key, val interface{}) bool {
 		v, ok := f(key)
 		atomic.StoreUint64(val.(*uint64), math.Float64bits(v))
+		return ok
+	})
+}
+
+// RangeAdd adds the return value of f to each counter.
+func (c *Float64) RangeAdd(f func(key interface{}) (delta float64, ok bool)) {
+	c.m.Range(func(key, val interface{}) bool {
+		delta, ok := f(key)
+		addFloat64(val.(*uint64), delta)
 		return ok
 	})
 }
