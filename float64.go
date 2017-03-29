@@ -9,6 +9,7 @@ package atomics
 
 import (
 	"math"
+	"strconv"
 	"sync/atomic"
 )
 
@@ -89,4 +90,9 @@ func (v *Float64) Decrement() (new float64) {
 // Reset is a wrapper for Swap(0).
 func (v *Float64) Reset() (old float64) {
 	return v.Swap(0)
+}
+
+// String implements fmt.Stringer.
+func (v *Float64) String() string {
+	return strconv.FormatFloat(float64(v.Load()), 'g', -1, 64)
 }

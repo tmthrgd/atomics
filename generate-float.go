@@ -13,9 +13,12 @@ import (
 )
 
 func main() {
-	for _, typ := range []struct{ Type, Name, Atomic, AtomicType, MathName string }{
-		{"float32", "Float32", "Uint32", "uint32", "Float32"},
-		{"float64", "Float64", "Uint64", "uint64", "Float64"},
+	for _, typ := range []struct {
+		Type, Name, Atomic, AtomicType, MathName string
+		Bitsize                                  int
+	}{
+		{"float32", "Float32", "Uint32", "uint32", "Float32", 32},
+		{"float64", "Float64", "Uint64", "uint64", "Float64", 64},
 	} {
 		f, err := os.Create(typ.Type + ".go")
 		if err != nil {
@@ -41,6 +44,7 @@ package atomics
 
 import (
 	"math"
+	"strconv"
 	"sync/atomic"
 )
 
@@ -121,5 +125,10 @@ func (v *{{.Name}}) Decrement() (new {{.Type}}) {
 // Reset is a wrapper for Swap(0).
 func (v *{{.Name}}) Reset() (old {{.Type}}) {
 	return v.Swap(0)
+}
+
+// String implements fmt.Stringer.
+func (v *{{.Name}}) String() string {
+	return strconv.FormatFloat(float64(v.Load()), 'g', -1, {{.Bitsize}})
 }
 `))

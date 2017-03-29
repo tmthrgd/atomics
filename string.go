@@ -67,3 +67,8 @@ func (s *String) Swap(new string) (old string) {
 func (s *String) Reset() (old string) {
 	return s.Swap("")
 }
+
+// String implements fmt.Stringer.
+func (s *String) String() string {
+	return s.Load()
+}

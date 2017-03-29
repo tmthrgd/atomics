@@ -5,7 +5,10 @@
 
 package atomics
 
-import "sync/atomic"
+import (
+	"strconv"
+	"sync/atomic"
+)
 
 func boolToUint32(v bool) uint32 {
 	if v {
@@ -69,4 +72,9 @@ func (b *Bool) Set() (old bool) {
 // Reset is a wrapper for Swap(false).
 func (b *Bool) Reset() (old bool) {
 	return b.Swap(false)
+}
+
+// String implements fmt.Stringer.
+func (b *Bool) String() string {
+	return strconv.FormatBool(b.Load())
 }

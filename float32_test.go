@@ -8,6 +8,7 @@
 package atomics
 
 import (
+	"fmt"
 	"testing"
 	"testing/quick"
 )
@@ -117,6 +118,15 @@ func TestFloat32Reset(t *testing.T) {
 	if err := quick.Check(func(v float32) bool {
 		a := NewFloat32(v)
 		return a.Reset() == v && a.Load() == 0
+	}, nil); err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestFloat32String(t *testing.T) {
+	if err := quick.Check(func(v float32) bool {
+		a := NewFloat32(v)
+		return a.String() == fmt.Sprint(v)
 	}, nil); err != nil {
 		t.Fatal(err)
 	}

@@ -60,6 +60,15 @@ func TestStringReset(t *testing.T) {
 	}
 }
 
+func TestStringString(t *testing.T) {
+	if err := quick.Check(func(v string) bool {
+		s := NewString(v)
+		return s.String() == v
+	}, nil); err != nil {
+		t.Fatal(err)
+	}
+}
+
 func BenchmarkNewString(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		NewString("")

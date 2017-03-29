@@ -7,7 +7,10 @@
 
 package atomics
 
-import "sync/atomic"
+import (
+	"strconv"
+	"sync/atomic"
+)
 
 // Uint32 provides an atomic uint32.
 type Uint32 struct {
@@ -73,4 +76,9 @@ func (v *Uint32) Decrement() (new uint32) {
 // Reset is a wrapper for Swap(0).
 func (v *Uint32) Reset() (old uint32) {
 	return v.Swap(0)
+}
+
+// String implements fmt.Stringer.
+func (v *Uint32) String() string {
+	return strconv.FormatUint(uint64(v.Load()), 10)
 }

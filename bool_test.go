@@ -87,6 +87,16 @@ func TestBoolReset(t *testing.T) {
 	}
 }
 
+func TestBoolString(t *testing.T) {
+	if NewBool(false).String() != "false" {
+		t.Fatal("String failed for false")
+	}
+
+	if NewBool(true).String() != "true" {
+		t.Fatal("String failed for true")
+	}
+}
+
 func BenchmarkNewBool(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		NewBool(true)
