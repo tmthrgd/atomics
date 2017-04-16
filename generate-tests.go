@@ -161,8 +161,7 @@ func Test{{.Name}}Reset(t *testing.T) {
 
 func Test{{.Name}}String(t *testing.T) {
 	if err := quick.Check(func(v {{.Type}}) bool {
-		a := New{{.Name}}(v)
-		return a.String() == fmt.Sprint(v)
+		return New{{.Name}}(v).String() == fmt.Sprint(v)
 	}, nil); err != nil {
 		t.Fatal(err)
 	}

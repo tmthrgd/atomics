@@ -125,8 +125,7 @@ func TestFloat64Reset(t *testing.T) {
 
 func TestFloat64String(t *testing.T) {
 	if err := quick.Check(func(v float64) bool {
-		a := NewFloat64(v)
-		return a.String() == fmt.Sprint(v)
+		return NewFloat64(v).String() == fmt.Sprint(v)
 	}, nil); err != nil {
 		t.Fatal(err)
 	}

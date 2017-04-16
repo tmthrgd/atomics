@@ -125,8 +125,7 @@ func TestUint32Reset(t *testing.T) {
 
 func TestUint32String(t *testing.T) {
 	if err := quick.Check(func(v uint32) bool {
-		a := NewUint32(v)
-		return a.String() == fmt.Sprint(v)
+		return NewUint32(v).String() == fmt.Sprint(v)
 	}, nil); err != nil {
 		t.Fatal(err)
 	}

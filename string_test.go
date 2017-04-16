@@ -62,8 +62,7 @@ func TestStringReset(t *testing.T) {
 
 func TestStringString(t *testing.T) {
 	if err := quick.Check(func(v string) bool {
-		s := NewString(v)
-		return s.String() == v
+		return NewString(v).String() == v
 	}, nil); err != nil {
 		t.Fatal(err)
 	}

@@ -125,8 +125,7 @@ func TestInt64Reset(t *testing.T) {
 
 func TestInt64String(t *testing.T) {
 	if err := quick.Check(func(v int64) bool {
-		a := NewInt64(v)
-		return a.String() == fmt.Sprint(v)
+		return NewInt64(v).String() == fmt.Sprint(v)
 	}, nil); err != nil {
 		t.Fatal(err)
 	}
