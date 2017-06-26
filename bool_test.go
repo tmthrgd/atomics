@@ -21,11 +21,11 @@ func TestNewBool(t *testing.T) {
 	}
 }
 
-func TestBoolUnsafeRaw(t *testing.T) {
+func TestBoolRaw(t *testing.T) {
 	var b Bool
 
-	if b.UnsafeRaw() == nil {
-		t.Fatal("UnsafeRaw returned nil")
+	if b.Raw() == nil {
+		t.Fatal("Raw returned nil")
 	}
 }
 

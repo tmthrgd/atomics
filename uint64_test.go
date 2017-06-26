@@ -27,11 +27,11 @@ func TestNewUint64(t *testing.T) {
 	}
 }
 
-func TestUint64UnsafeRaw(t *testing.T) {
+func TestUint64Raw(t *testing.T) {
 	var v Uint64
 
-	if v.UnsafeRaw() == nil {
-		t.Fatal("UnsafeRaw returned nil")
+	if v.Raw() == nil {
+		t.Fatal("Raw returned nil")
 	}
 }
 

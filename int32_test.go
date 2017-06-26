@@ -27,11 +27,11 @@ func TestNewInt32(t *testing.T) {
 	}
 }
 
-func TestInt32UnsafeRaw(t *testing.T) {
+func TestInt32Raw(t *testing.T) {
 	var v Int32
 
-	if v.UnsafeRaw() == nil {
-		t.Fatal("UnsafeRaw returned nil")
+	if v.Raw() == nil {
+		t.Fatal("Raw returned nil")
 	}
 }
 

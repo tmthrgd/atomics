@@ -27,11 +27,11 @@ func TestNewFloat32(t *testing.T) {
 	}
 }
 
-func TestFloat32UnsafeRaw(t *testing.T) {
+func TestFloat32Raw(t *testing.T) {
 	var v Float32
 
-	if v.UnsafeRaw() == nil {
-		t.Fatal("UnsafeRaw returned nil")
+	if v.Raw() == nil {
+		t.Fatal("Raw returned nil")
 	}
 }
 

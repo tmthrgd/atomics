@@ -63,11 +63,11 @@ func TestNew{{.Name}}(t *testing.T) {
 	}
 }
 
-func Test{{.Name}}UnsafeRaw(t *testing.T) {
+func Test{{.Name}}Raw(t *testing.T) {
 	var v {{.Name}}
 
-	if v.UnsafeRaw() == nil {
-		t.Fatal("UnsafeRaw returned nil")
+	if v.Raw() == nil {
+		t.Fatal("Raw returned nil")
 	}
 }
 
