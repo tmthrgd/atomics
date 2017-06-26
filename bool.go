@@ -29,16 +29,16 @@ func NewBool(val bool) *Bool {
 	return &Bool{val: boolToUint32(val)}
 }
 
-// UnsafeRaw returns a pointer to the underlying uint32.
+// Raw returns a pointer to the underlying uint32.
 //
 // It is only safe to access the pointer with methods from the
-// sync/atomic package. It must not be manually dereferenced.
+// sync/atomic package. Use caution if manually dereferencing.
 //
 // The true value is stored as one, false is stored as zero.
 //
 // The behaviour of Bool is undefined if this value is set
 // to anything other than zero or one.
-func (b *Bool) UnsafeRaw() *uint32 {
+func (b *Bool) Raw() *uint32 {
 	return &b.val
 }
 

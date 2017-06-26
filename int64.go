@@ -23,11 +23,11 @@ func NewInt64(val int64) *Int64 {
 	return &Int64{val: val}
 }
 
-// UnsafeRaw returns a pointer to the int64.
+// Raw returns a pointer to the int64.
 //
 // It is only safe to access the pointer with methods from the
-// sync/atomic package. It must not be manually dereferenced.
-func (v *Int64) UnsafeRaw() *int64 {
+// sync/atomic package. Use caution if manually dereferencing.
+func (v *Int64) Raw() *int64 {
 	return &v.val
 }
 

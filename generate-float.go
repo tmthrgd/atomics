@@ -61,15 +61,15 @@ func New{{.Name}}(val {{.Type}}) *{{.Name}} {
 	}
 }
 
-// UnsafeRaw returns a pointer to the {{.Type}}.
+// Raw returns a pointer to the {{.Type}}.
 //
 // It is only safe to access the pointer with methods from the
-// sync/atomic package. It must not be manually dereferenced.
+// sync/atomic package. Use caution if manually dereferencing.
 //
 // This returns the underlying {{.AtomicType}}, to convert this
 // to and from a {{.Type}}, use math.{{.MathName}}frombits
 // and math.{{.MathName}}bits respectively.
-func (v *{{.Name}}) UnsafeRaw() *{{.AtomicType}} {
+func (v *{{.Name}}) Raw() *{{.AtomicType}} {
 	return &v.val
 }
 

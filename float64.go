@@ -26,15 +26,15 @@ func NewFloat64(val float64) *Float64 {
 	}
 }
 
-// UnsafeRaw returns a pointer to the float64.
+// Raw returns a pointer to the float64.
 //
 // It is only safe to access the pointer with methods from the
-// sync/atomic package. It must not be manually dereferenced.
+// sync/atomic package. Use caution if manually dereferencing.
 //
 // This returns the underlying uint64, to convert this
 // to and from a float64, use math.Float64frombits
 // and math.Float64bits respectively.
-func (v *Float64) UnsafeRaw() *uint64 {
+func (v *Float64) Raw() *uint64 {
 	return &v.val
 }
 

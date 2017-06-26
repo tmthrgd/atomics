@@ -23,11 +23,11 @@ func NewInt32(val int32) *Int32 {
 	return &Int32{val: val}
 }
 
-// UnsafeRaw returns a pointer to the int32.
+// Raw returns a pointer to the int32.
 //
 // It is only safe to access the pointer with methods from the
-// sync/atomic package. It must not be manually dereferenced.
-func (v *Int32) UnsafeRaw() *int32 {
+// sync/atomic package. Use caution if manually dereferencing.
+func (v *Int32) Raw() *int32 {
 	return &v.val
 }
 

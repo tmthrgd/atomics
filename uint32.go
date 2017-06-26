@@ -23,11 +23,11 @@ func NewUint32(val uint32) *Uint32 {
 	return &Uint32{val: val}
 }
 
-// UnsafeRaw returns a pointer to the uint32.
+// Raw returns a pointer to the uint32.
 //
 // It is only safe to access the pointer with methods from the
-// sync/atomic package. It must not be manually dereferenced.
-func (v *Uint32) UnsafeRaw() *uint32 {
+// sync/atomic package. Use caution if manually dereferencing.
+func (v *Uint32) Raw() *uint32 {
 	return &v.val
 }
 

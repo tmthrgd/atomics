@@ -26,15 +26,15 @@ func NewFloat32(val float32) *Float32 {
 	}
 }
 
-// UnsafeRaw returns a pointer to the float32.
+// Raw returns a pointer to the float32.
 //
 // It is only safe to access the pointer with methods from the
-// sync/atomic package. It must not be manually dereferenced.
+// sync/atomic package. Use caution if manually dereferencing.
 //
 // This returns the underlying uint32, to convert this
 // to and from a float32, use math.Float32frombits
 // and math.Float32bits respectively.
-func (v *Float32) UnsafeRaw() *uint32 {
+func (v *Float32) Raw() *uint32 {
 	return &v.val
 }
 

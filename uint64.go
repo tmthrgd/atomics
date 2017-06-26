@@ -23,11 +23,11 @@ func NewUint64(val uint64) *Uint64 {
 	return &Uint64{val: val}
 }
 
-// UnsafeRaw returns a pointer to the uint64.
+// Raw returns a pointer to the uint64.
 //
 // It is only safe to access the pointer with methods from the
-// sync/atomic package. It must not be manually dereferenced.
-func (v *Uint64) UnsafeRaw() *uint64 {
+// sync/atomic package. Use caution if manually dereferencing.
+func (v *Uint64) Raw() *uint64 {
 	return &v.val
 }
 
