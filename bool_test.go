@@ -27,6 +27,14 @@ func TestBoolRaw(t *testing.T) {
 	if b.Raw() == nil {
 		t.Fatal("Raw returned nil")
 	}
+
+	if *NewBool(false).Raw() != 0 {
+		t.Fatal("Raw failed for false")
+	}
+
+	if *NewBool(true).Raw() != 1 {
+		t.Fatal("Raw failed for true")
+	}
 }
 
 func TestBoolLoad(t *testing.T) {

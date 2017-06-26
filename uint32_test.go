@@ -33,6 +33,12 @@ func TestUint32Raw(t *testing.T) {
 	if v.Raw() == nil {
 		t.Fatal("Raw returned nil")
 	}
+
+	if err := quick.Check(func(v uint32) bool {
+		return *NewUint32(v).Raw() == v
+	}, nil); err != nil {
+		t.Fatal(err)
+	}
 }
 
 func TestUint32Load(t *testing.T) {

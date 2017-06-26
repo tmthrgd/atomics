@@ -9,6 +9,7 @@ package atomics
 
 import (
 	"fmt"
+	"math"
 	"testing"
 	"testing/quick"
 )
@@ -32,6 +33,12 @@ func TestFloat64Raw(t *testing.T) {
 
 	if v.Raw() == nil {
 		t.Fatal("Raw returned nil")
+	}
+
+	if err := quick.Check(func(v float64) bool {
+		return *NewFloat64(v).Raw() == math.Float64bits(v)
+	}, nil); err != nil {
+		t.Fatal(err)
 	}
 }
 

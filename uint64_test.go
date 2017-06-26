@@ -33,6 +33,12 @@ func TestUint64Raw(t *testing.T) {
 	if v.Raw() == nil {
 		t.Fatal("Raw returned nil")
 	}
+
+	if err := quick.Check(func(v uint64) bool {
+		return *NewUint64(v).Raw() == v
+	}, nil); err != nil {
+		t.Fatal(err)
+	}
 }
 
 func TestUint64Load(t *testing.T) {

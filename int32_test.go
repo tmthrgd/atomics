@@ -33,6 +33,12 @@ func TestInt32Raw(t *testing.T) {
 	if v.Raw() == nil {
 		t.Fatal("Raw returned nil")
 	}
+
+	if err := quick.Check(func(v int32) bool {
+		return *NewInt32(v).Raw() == v
+	}, nil); err != nil {
+		t.Fatal(err)
+	}
 }
 
 func TestInt32Load(t *testing.T) {

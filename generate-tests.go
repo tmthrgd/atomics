@@ -13,13 +13,13 @@ import (
 )
 
 func main() {
-	for _, typ := range []struct{ Type, Name string }{
-		{"int32", "Int32"},
-		{"int64", "Int64"},
-		{"uint32", "Uint32"},
-		{"uint64", "Uint64"},
-		{"float32", "Float32"},
-		{"float64", "Float64"},
+	for _, typ := range []struct{ Type, Name, MathName string }{
+		{"int32", "Int32", ""},
+		{"int64", "Int64", ""},
+		{"uint32", "Uint32", ""},
+		{"uint64", "Uint64", ""},
+		{"float32", "Float32", "Float32"},
+		{"float64", "Float64", "Float64"},
 	} {
 		f, err := os.Create(typ.Type + "_test.go")
 		if err != nil {
@@ -45,6 +45,9 @@ package atomics
 
 import (
 	"fmt"
+{{- if .MathName}}
+	"math"
+{{- end}}
 	"testing"
 	"testing/quick"
 )
@@ -68,6 +71,16 @@ func Test{{.Name}}Raw(t *testing.T) {
 
 	if v.Raw() == nil {
 		t.Fatal("Raw returned nil")
+	}
+
+	if err := quick.Check(func(v {{.Type}}) bool {
+{{- if .MathName}}
+		return *New{{.Name}}(v).Raw() == math.{{.MathName}}bits(v)
+{{- else}}
+		return *New{{.Name}}(v).Raw() == v
+{{- end}}
+	}, nil); err != nil {
+		t.Fatal(err)
 	}
 }
 
