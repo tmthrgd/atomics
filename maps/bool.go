@@ -8,13 +8,14 @@
 package maps
 
 import (
+	"sync"
+
 	"github.com/tmthrgd/atomics"
-	"golang.org/x/sync/syncmap"
 )
 
 // Bool provides a map of atomic bools.
 type Bool struct {
-	m syncmap.Map // map[interface{}]*atomics.Bool
+	m sync.Map // map[interface{}]*atomics.Bool
 }
 
 // Retrieve returns the atomics.Bool associated with

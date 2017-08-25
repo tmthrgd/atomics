@@ -8,13 +8,14 @@
 package maps
 
 import (
+	"sync"
+
 	"github.com/tmthrgd/atomics"
-	"golang.org/x/sync/syncmap"
 )
 
 // String provides a map of atomic strings.
 type String struct {
-	m syncmap.Map // map[interface{}]*atomics.String
+	m sync.Map // map[interface{}]*atomics.String
 }
 
 // Retrieve returns the atomics.String associated with

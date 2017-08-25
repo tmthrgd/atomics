@@ -8,13 +8,14 @@
 package maps
 
 import (
+	"sync"
+
 	"github.com/tmthrgd/atomics"
-	"golang.org/x/sync/syncmap"
 )
 
 // Float64 provides a map of atomic float64s.
 type Float64 struct {
-	m syncmap.Map // map[interface{}]*atomics.Float64
+	m sync.Map // map[interface{}]*atomics.Float64
 }
 
 // Retrieve returns the atomics.Float64 associated with

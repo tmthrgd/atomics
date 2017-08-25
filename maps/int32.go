@@ -8,13 +8,14 @@
 package maps
 
 import (
+	"sync"
+
 	"github.com/tmthrgd/atomics"
-	"golang.org/x/sync/syncmap"
 )
 
 // Int32 provides a map of atomic int32s.
 type Int32 struct {
-	m syncmap.Map // map[interface{}]*atomics.Int32
+	m sync.Map // map[interface{}]*atomics.Int32
 }
 
 // Retrieve returns the atomics.Int32 associated with

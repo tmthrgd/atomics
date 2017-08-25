@@ -8,13 +8,14 @@
 package maps
 
 import (
+	"sync"
+
 	"github.com/tmthrgd/atomics"
-	"golang.org/x/sync/syncmap"
 )
 
 // Float32 provides a map of atomic float32s.
 type Float32 struct {
-	m syncmap.Map // map[interface{}]*atomics.Float32
+	m sync.Map // map[interface{}]*atomics.Float32
 }
 
 // Retrieve returns the atomics.Float32 associated with

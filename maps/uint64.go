@@ -8,13 +8,14 @@
 package maps
 
 import (
+	"sync"
+
 	"github.com/tmthrgd/atomics"
-	"golang.org/x/sync/syncmap"
 )
 
 // Uint64 provides a map of atomic uint64s.
 type Uint64 struct {
-	m syncmap.Map // map[interface{}]*atomics.Uint64
+	m sync.Map // map[interface{}]*atomics.Uint64
 }
 
 // Retrieve returns the atomics.Uint64 associated with
