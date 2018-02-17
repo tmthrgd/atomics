@@ -8,6 +8,7 @@
 package main
 
 import (
+	"log"
 	"os"
 	"text/template"
 )
@@ -22,11 +23,11 @@ func main() {
 	} {
 		f, err := os.Create(typ.Type + ".go")
 		if err != nil {
-			panic(err)
+			log.Fatal(err)
 		}
 
 		if err = tmpl.Execute(f, typ); err != nil {
-			panic(err)
+			log.Fatal(err)
 		}
 
 		f.Close()
