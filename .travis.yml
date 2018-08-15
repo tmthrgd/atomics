@@ -2,7 +2,7 @@ language: go
 go:
     - 1.9.x
     - 1.10.x
-    - 1.11.x
+#   - 1.11.x
     - tip
 script: go test -v -quickchecks 1000000 ./...
 matrix:
